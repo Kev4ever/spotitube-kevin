@@ -11,13 +11,13 @@ public interface PlayListService {
 
     Playlists getPlaylists(String token) throws AuthenticationException;
 
-    Playlists deletePlaylist(String id, String token) throws AuthenticationException;
+    Playlists deletePlaylist(int id, String token) throws AuthenticationException;
 
     Tracklist getPlaylistTracks(int id, String token) throws AuthenticationException;
 
     Playlists addPlaylist(Playlist playlist, String token) throws AuthenticationException;
 
-    Playlists updatePlaylist(Playlist playlist, String id, String token) throws AuthenticationException;
+    Playlists updatePlaylist(Playlist playlist, int id, String token) throws AuthenticationException;
 
     Tracklist deletePlaylistTrack(int playlistId, int trackId, String token) throws AuthenticationException;
 

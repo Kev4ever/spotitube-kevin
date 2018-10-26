@@ -24,7 +24,7 @@ public class LoginController {
     public Response receiveLoginRequest(Account account) {
         Response response;
         try {
-            response = Response.ok().entity(loginService.receiveLoginRequest(account)).build();
+            response = Response.status(Response.Status.CREATED).entity(loginService.receiveLoginRequest(account)).build();
         } catch (LoginException e) {
             response = Response.status(Response.Status.UNAUTHORIZED).build();
         }

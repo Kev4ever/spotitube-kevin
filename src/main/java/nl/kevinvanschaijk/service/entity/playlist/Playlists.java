@@ -19,9 +19,9 @@ public class Playlists {
 //        playlists.removeIf(obj -> obj.getId() == id);
 //    }
 
-//    public Playlist getPlaylist(int id){
-//        Playlist searched = null;
-//        for(Playlist list : playlists) {
+//    public playlist getPlaylist(int id){
+//        playlist searched = null;
+//        for(playlist list : playlists) {
 //            if(list.getId() == id){
 //                searched = list;
 //            }

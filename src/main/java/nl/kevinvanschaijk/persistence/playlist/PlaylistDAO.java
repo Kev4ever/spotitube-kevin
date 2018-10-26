@@ -60,14 +60,14 @@ public class PlaylistDAO {
         }
     }
 
-    public void updatePlaylist(Playlist playlist, String id) {
+    public void updatePlaylist(Playlist playlist, int id) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "UPDATE playlist SET name= ? WHERE id = ?");
         ) {
             statement.setString(1, playlist.getName());
-            statement.setString(2, id);
+            statement.setInt(2, id);
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

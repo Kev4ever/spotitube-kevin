@@ -27,8 +27,10 @@ public class PlaylistServiceTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
     @InjectMocks
     PlaylistServiceImpl sut;
+
     @Mock
     private AccountTokenDAO accountTokenDAOMock;
     @Mock
@@ -38,18 +40,16 @@ public class PlaylistServiceTest {
 
     @Test
     public void getPlaylistsRequestShouldReturnPlaylists() throws AuthenticationException {
-        AccountToken testToken = new AccountToken();
-        ArrayList<Playlist> playlists = new ArrayList<>();
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
-        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(testToken);
-        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(playlists);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(new ArrayList<Playlist>());
 
         assertTrue(sut.getPlaylists("123") instanceof Playlists);
     }
 
     @Test
-    public void getPlaylistsRequestShouldThrowException() throws AuthenticationException {
+    public void getPlaylistsRequestShouldThrowAuthenticationException() throws AuthenticationException {
         thrown.expect(AuthenticationException.class);
         thrown.expectMessage("Invalid token");
 
@@ -58,74 +58,60 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void deletePlaylistRequestShouldReturnModifiedPlaylists() throws AuthenticationException {
-        AccountToken testToken = new AccountToken();
-        ArrayList<Playlist> playlists = new ArrayList<>();
+    public void deletePlaylistRequestShouldReturnPlaylists() throws AuthenticationException {
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
-        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(testToken);
-        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(playlists);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(new ArrayList<Playlist>());
 
-
-        assertTrue(sut.deletePlaylist("2", "123") instanceof Playlists);
+        assertTrue(sut.deletePlaylist(2, "123") instanceof Playlists);
     }
 
     @Test
-    public void deletePlaylistRequestShouldThrowException() throws AuthenticationException {
+    public void deletePlaylistRequestShouldThrowAuthenticationException() throws AuthenticationException {
         thrown.expect(AuthenticationException.class);
         thrown.expectMessage("Invalid token");
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
-        sut.deletePlaylist("1", "123");
+        sut.deletePlaylist(1, "123");
     }
 
     @Test
-    public void addPlaylistRequestShouldReturnModifiedPlaylists() throws AuthenticationException {
-        Playlist testPlaylist = new Playlist();
-        AccountToken testToken = new AccountToken();
-        ArrayList<Playlist> playlists = new ArrayList<>();
+    public void addPlaylistRequestShouldReturnPlaylists() throws AuthenticationException {
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
-        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(testToken);
-        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(playlists);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(new ArrayList<Playlist>());
 
-
-        assertTrue(sut.addPlaylist(testPlaylist, "123") instanceof Playlists);
+        assertTrue(sut.addPlaylist(new Playlist(), "123") instanceof Playlists);
     }
 
     @Test
-    public void addPlaylistRequestShouldThrowException() throws AuthenticationException {
+    public void addPlaylistRequestShouldThrowAuthenticationException() throws AuthenticationException {
         thrown.expect(AuthenticationException.class);
         thrown.expectMessage("Invalid token");
 
-        Playlist testPlaylist = new Playlist();
-
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
-        sut.addPlaylist(testPlaylist, "123");
+        sut.addPlaylist(new Playlist(), "123");
     }
 
     @Test
-    public void updatePlaylistRequestShouldReturnModifiedPlaylists() throws AuthenticationException {
-        Playlist testPlaylist = new Playlist();
-        AccountToken testToken = new AccountToken();
-        ArrayList<Playlist> playlists = new ArrayList<>();
+    public void updatePlaylistRequestShouldReturnPlaylists() throws AuthenticationException {
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
-        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(testToken);
-        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(playlists);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(playlistDAOMock.getAllPlaylists(Mockito.any())).thenReturn(new ArrayList<Playlist>());
 
-        assertTrue(sut.updatePlaylist(testPlaylist, "1", "123") instanceof Playlists);
+        assertTrue(sut.updatePlaylist(new Playlist(), 1, "123") instanceof Playlists);
     }
 
     @Test
-    public void updatePlaylistRequestShouldThrowException() throws AuthenticationException {
+    public void updatePlaylistRequestShouldThrowAuthenticationException() throws AuthenticationException {
         thrown.expect(AuthenticationException.class);
         thrown.expectMessage("Invalid token");
 
-        Playlist testPlaylist = new Playlist();
-
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
-        sut.updatePlaylist(testPlaylist, "1,", "123");
+        sut.updatePlaylist(new Playlist(), 1, "123");
 
     }
 
@@ -143,12 +129,49 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void getPlaylistTracksRequestShouldTrowException() throws AuthenticationException {
+    public void getPlaylistTracksRequestShouldTrowAuthenticationException() throws AuthenticationException {
         thrown.expect(AuthenticationException.class);
         thrown.expectMessage("Invalid token");
 
         Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
-        assertTrue(sut.getPlaylistTracks(1, "123") instanceof Tracklist);
+        sut.getPlaylistTracks(1, "123");
     }
+
+    @Test
+    public void deletePlaylistTrackRequestShouldReturnTracklist() throws AuthenticationException {
+
+        Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(trackDAO.getPlaylistTracks(Mockito.anyInt())).thenReturn(new ArrayList<>());
+        assertTrue(sut.deletePlaylistTrack(1, 1, "123") instanceof Tracklist);
+    }
+
+    @Test
+    public void deletePlaylistTrackRequestShouldTrowAuthenticationException() throws AuthenticationException {
+        thrown.expect(AuthenticationException.class);
+        thrown.expectMessage("Invalid token");
+
+        Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
+        sut.deletePlaylistTrack(1, 1, "123");
+    }
+
+    @Test
+    public void addPlaylistTrackRequestShouldReturnTracklist() throws AuthenticationException {
+
+        Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(true);
+        Mockito.when(accountTokenDAOMock.getToken(Mockito.any())).thenReturn(new AccountToken());
+        Mockito.when(trackDAO.getPlaylistTracks(Mockito.anyInt())).thenReturn(new ArrayList<>());
+        assertTrue(sut.addPlaylistTrack(new Track(), 1, "123") instanceof Tracklist);
+    }
+
+    @Test
+    public void addPlaylistTrackRequestShouldTrowAuthenticationException() throws AuthenticationException {
+        thrown.expect(AuthenticationException.class);
+        thrown.expectMessage("Invalid token");
+
+        Mockito.when(accountTokenDAOMock.checkValidToken(Mockito.any())).thenReturn(false);
+        sut.deletePlaylistTrack(1, 1, "123");
+    }
+
 
 }

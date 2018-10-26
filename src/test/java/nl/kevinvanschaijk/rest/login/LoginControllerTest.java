@@ -32,23 +32,23 @@ public class LoginControllerTest {
     private LoginController sut;
 
     @Test
-    public void loginRequestShouldReturnLoginOk() throws LoginException {
+    public void loginRequestShouldReturnCreated() throws LoginException {
         Account account = new Account();
         AccountToken token = new AccountToken("", "");
         Mockito.when(loginServiceMock.receiveLoginRequest(Mockito.any())).thenReturn(token);
 
-        Response loginResponse = sut.receiveLoginRequest(account);
+        Response response = sut.receiveLoginRequest(account);
 
-        assertEquals(Response.Status.OK.getStatusCode(), loginResponse.getStatus());
-        assertEquals(token, loginResponse.getEntity());
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        assertEquals(token, response.getEntity());
     }
 
     @Test
     public void loginRequestShouldreturnUnauthorized() throws LoginException {
         Account account = new Account("", "");
         Mockito.when(loginServiceMock.receiveLoginRequest(Mockito.any())).thenThrow(new LoginException());
-        Response loginResponse = sut.receiveLoginRequest(account);
+        Response response = sut.receiveLoginRequest(account);
 
-        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), loginResponse.getStatus());
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
     }
 }

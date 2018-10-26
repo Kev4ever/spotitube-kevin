@@ -49,7 +49,7 @@ public class TrackDAO {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        "SELECT tracks.*,trackinplaylist.offlineAvailable From tracks LEFT JOIN trackinplaylist ON trackinplaylist.Track_id = tracks.id WHERE trackinplaylist.Playlist_id IS NULL OR trackinplaylist.Playlist_id != ?");
+                        "SELECT tracks.*,trackinplaylist.offlineAvailable,trackinplaylist.Playlist_id From tracks LEFT JOIN trackinplaylist ON trackinplaylist.Track_id = tracks.id WHERE trackinplaylist.Playlist_id IS NULL OR tracks.id NOT IN (SELECT Track_id FROM trackinplaylist WHERE Playlist_id = ? ) GROUP BY Track_id");
         ) {
             statement.setInt(1, Integer.parseInt(forPlayList));
             ResultSet resultSet = statement.executeQuery();

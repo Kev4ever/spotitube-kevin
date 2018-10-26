@@ -38,9 +38,9 @@ public class PlaylistServiceImpl implements PlayListService {
     }
 
     @Override
-    public Playlists deletePlaylist(String id, String token) throws AuthenticationException {
+    public Playlists deletePlaylist(int id, String token) throws AuthenticationException {
         if (accountTokenDAO.checkValidToken(accountTokenDAO.getToken(token))) {
-            playlistDAO.deletePlaylist(Integer.parseInt(id));
+            playlistDAO.deletePlaylist(id);
             return getPlaylists(token);
         } else {
             throw new AuthenticationException("Invalid token");
@@ -73,7 +73,7 @@ public class PlaylistServiceImpl implements PlayListService {
     }
 
     @Override
-    public Playlists updatePlaylist(Playlist playlist, String id, String token) throws AuthenticationException {
+    public Playlists updatePlaylist(Playlist playlist, int id, String token) throws AuthenticationException {
         AccountToken accountToken = accountTokenDAO.getToken(token);
         if (accountTokenDAO.checkValidToken(accountToken)) {
             playlistDAO.updatePlaylist(playlist, id);

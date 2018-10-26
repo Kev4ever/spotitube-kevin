@@ -64,25 +64,26 @@ public class AccountTokenDAO {
 
     public boolean checkValidToken(AccountToken token) {
         boolean validToken = false;
+        if (token != null) {
+            try (
+                    Connection connection = connectionFactory.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(
+                            "SELECT expiredate from token where token = ? AND Account_username = ?");
+            ) {
+                statement.setString(1, token.getToken());
+                statement.setString(2, token.getUser());
+                ResultSet resultSet = statement.executeQuery();
 
-        try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        "SELECT expiredate from token where token = ? AND Account_username = ?");
-        ) {
-            statement.setString(1, token.getToken());
-            statement.setString(2, token.getUser());
-            ResultSet resultSet = statement.executeQuery();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                while (resultSet.next()) {
+                    String expireDate = resultSet.getString("expiredate");
+                    validToken = LocalDateTime.parse(expireDate, formatter).isAfter(LocalDateTime.now());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            while (resultSet.next()) {
-                String expireDate = resultSet.getString("expiredate");
-                validToken = LocalDateTime.parse(expireDate, formatter).isAfter(LocalDateTime.now());
+                }
 
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return validToken;

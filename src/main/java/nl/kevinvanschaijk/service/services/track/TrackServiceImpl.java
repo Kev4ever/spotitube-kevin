@@ -7,7 +7,7 @@ import nl.kevinvanschaijk.service.entity.track.Tracklist;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.security.auth.login.LoginException;
+import javax.naming.AuthenticationException;
 
 @Default
 public class TrackServiceImpl implements TrackService {
@@ -19,12 +19,12 @@ public class TrackServiceImpl implements TrackService {
     AccountTokenDAO accountTokenDAO;
 
     @Override
-    public Tracklist getAllTracks(String forPlayList, String token) throws LoginException {
+    public Tracklist getAllTracks(String forPlayList, String token) throws AuthenticationException {
         AccountToken accountToken = accountTokenDAO.getToken(token);
         if (accountTokenDAO.checkValidToken(accountToken)) {
             return new Tracklist(trackDAO.getAllTracks(forPlayList));
         } else {
-            throw new LoginException("Invalid token");
+            throw new AuthenticationException("Invalid token");
         }
     }
 }
